@@ -1,0 +1,71 @@
+body {
+  background-color: #f2f2f2;
+  font-family: 'Open Sans', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  min-height: 50px;
+  padding: 10px;
+  background-color: #ef5350;
+  box-shadow: 0 0 4px rgba(0,0,0,.14), 0 4px 8px rgba(0,0,0,.28);
+}
+
+header h1 {
+  margin: 0;
+  text-align: center;
+  color: #fff;
+  font-weight: 100;
+}
+
+.content {
+  margin: 16px auto;
+  max-width: 900px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.content h3 {
+  text-align: left;
+  font-weight: 400;
+  font-size: 1.4em;
+  margin-left: 10px;
+}
+
+.grid-container {
+  display: block;
+}
+
+.grid-container ol {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+}
+
+.grid-container ol a:link, .grid-container ol a:visited {
+  margin: 13px;
+  width: calc(33.33333% - 26.66667px + 0px);
+  box-sizing: border-box;
+  padding: 5px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.grid-container ol a:hover, .grid-container ol a:active {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.25), 0 3px 3px rgba(0,0,0,0.22);
+}
+
+span {
+  color: #000;
+}
+
+span.text-gray {
+  color: #757575;
+}

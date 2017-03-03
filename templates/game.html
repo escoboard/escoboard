@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="content">
+    <h3>Gameplay</h3>
+    <img src="/summary/{{ game.gif }}" width="300px" style="margin:10px"><br>
+    <h3>Graphs</h3>
+    <div id="reward_sum"></div><br>
+    <div id="action_value_sum"></div>
+    <div id="loss"></div>
+    <div id="action_value_histogram"></div>
+  </div>
+{% endblock %}
+
+{% block jsinclude %}
+<script src="/static/plotly-latest.min.js"></script>
+{% endblock %}
+
+{% block js %}
+<script>
+  var DATA_CSV_PATH = '/summary/{{ game.data }}';
+
+  // Read CSV file
+  Plotly.d3.csv(DATA_CSV_PATH, function(err, rows) {
+    var indices = rows.map(function(row) {
+      return parseInt(row['index']);
+    });
+
+    var reward_sum = rows.map(function(row) {
+      return parseFloat(row['reward_sum']);
+    });
+
+    var action_value_sum = rows.map(function(row) {
+      return parseFloat(row['action_value_sum']);
+    });
+
+    var loss = rows.map(function(row) {
+      return parseFloat(row['loss']);
+    });
+
+    var action_values = rows.map(function(row) {
+      var action_value = row['action_value'];
+      var action_value_list = action_value.replace("[", "")
+                                          .replace("]", "").trim()
+                                          .replace(/\s\s+/g, ' ').split(' ');
+
+      return action_value_list.map(function(a) {return parseFloat(a)});
+    });
+
+    // Plot Reward Sum graph
+    var reward_sum_trace = {
+      x: indices,
+      y: reward_sum,
+      mode: 'lines',
+      name: 'Reward',
+    };
+
+    var reward_sum_layout = {
+      title:'Total reward',
+      xaxis: {
+        title: 'Timestep'
+      },
+      yaxis: {
+        title: 'Total Reward'
+      }
+    };
+
+    // Plot Action value sum graph
+    var action_value_sum_trace = {
+      x: indices,
+      y: action_value_sum,
+      mode: 'lines',
+      name: 'Action Value',
+    };
+
+    var action_value_sum_layout = {
+      title:'Action Value',
+      xaxis: {
+        title: 'Timestep'
+      },
+      yaxis: {
+        title: 'Action Value'
+      }
+    };
+
+    Plotly.plot(document.getElementById('action_value_sum'), [action_value_sum_trace], action_value_sum_layout);
+
+    // Plot Loss graph
+    var loss_trace = {
+      x: indices,
+      y: loss,
+      mode: 'lines',
+      name: 'Loss',
+    };
+
+    var loss_layout = {
+      title:'Loss',
+      xaxis: {
+        title: 'Timestep'
+      },
+      yaxis: {
+        title: 'Loss'
+      }
+    };
+
+    Plotly.plot(document.getElementById('loss'), [loss_trace], loss_layout);
+
+    // Plot Action values
+    var z_data = [];
+    for (var i=6; i<indices.length; i++) {
+      z_data.push(action_values[i]);
+    }
+
+    var data = [{
+               z: z_data,
+               type: 'surface'
+            }];
+
+    var layout = {
+      title: 'Action Value Histogram',
+      autosize: false,
+      width: '90%',
+      height: 700,
+      scene: {
+        xaxis: {
+          title: 'Action Number'
+        },
+        yaxis: {
+          title: 'Timestep'
+        },
+        zaxis: {
+          title: 'Action Value'
+        }
+      },
+    };
+    Plotly.newPlot('action_value_histogram', data, layout);
+  });
+</script>
+{% endblock %}
