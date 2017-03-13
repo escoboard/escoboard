@@ -4,10 +4,29 @@
     <h3>Gameplay</h3>
     <img src="/summary/{{ game.gif }}" width="300px" style="margin:10px"><br>
     <h3>Graphs</h3>
-    <div id="reward_sum"></div><br>
-    <div id="action_value_sum"></div>
-    <div id="loss"></div>
-    <div id="action_value_histogram"></div>
+    <div class="container">
+     <div class="row">
+       <div class="col-6">
+         <div id="reward_sum"></div>
+       </div>
+       <div class="col-6">
+         <div id="action_value_sum"></div>
+       </div>
+     </div>
+   </div>
+   <br>
+
+   <div class="container">
+    <div class="row">
+      <div class="col-6">
+        <div id="loss"></div>
+      </div>
+      <div class="col-6">
+        <div id="action_value_histogram"></div>
+      </div>
+    </div>
+  </div>
+
   </div>
 {% endblock %}
 
@@ -61,7 +80,7 @@
       },
       yaxis: {
         title: 'Total Reward'
-      }
+      },
     };
     Plotly.plot(document.getElementById('reward_sum'), [reward_sum_trace], reward_sum_layout);
 
@@ -80,7 +99,7 @@
       },
       yaxis: {
         title: 'Action Value'
-      }
+      },
     };
 
     Plotly.plot(document.getElementById('action_value_sum'), [action_value_sum_trace], action_value_sum_layout);
@@ -100,7 +119,7 @@
       },
       yaxis: {
         title: 'Loss'
-      }
+      },
     };
 
     Plotly.plot(document.getElementById('loss'), [loss_trace], loss_layout);
@@ -118,9 +137,6 @@
 
     var layout = {
       title: 'Action Value Histogram',
-      autosize: false,
-      width: '90%',
-      height: 700,
       scene: {
         xaxis: {
           title: 'Action Number'
